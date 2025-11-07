@@ -19,13 +19,21 @@ A comprehensive, automated security testing and reconnaissance framework for bug
 - **CORS Checker**: Misconfiguration detection with credential testing
 - **Integration**: SQLMap and Nuclei for advanced scanning
 
-### API Security Testing (NEW! 🎉)
+### API Security Testing
 - **API Scanner**: OWASP API Security Top 10 vulnerabilities
 - **JWT Analyzer**: Token decoding, weak secrets, algorithm confusion
 - **BOLA/IDOR Tester**: Broken authorization and insecure direct object references
 - **GraphQL Scanner**: Introspection, depth limits, batch queries, injection
 - **Mass Assignment**: Parameter pollution and privilege escalation
 - **Rate Limiting**: Resource exhaustion and DoS protection testing
+
+### High-Value Bug Hunting Tools (NEW! 🔥)
+- **Open Redirect Scanner**: Unvalidated redirect detection (GET/POST/Meta/JS)
+- **Subdomain Takeover**: Detects dangling DNS (20+ cloud services)
+- **JS Secret Scanner**: Extract API keys, tokens, credentials from JavaScript
+- **SSTI Detector**: Server-Side Template Injection (Jinja2, Twig, Freemarker, etc.)
+- **XXE Scanner**: XML External Entity injection testing
+- **Slack/Discord Notifications**: Real-time vulnerability alerts
 
 ### Advanced Features
 - ⚡ **Parallel Execution**: Multi-threaded scanning with tmux sessions
@@ -44,17 +52,23 @@ websec/
 │   └── vuln_scanner.py          # Vulnerability scanner orchestrator
 ├── tools/
 │   ├── recon/                   # Reconnaissance tools
+│   │   ├── subdomain_takeover.py  # Subdomain takeover checker (NEW)
+│   │   └── js_secret_scanner.py   # JavaScript secret scanner (NEW)
 │   ├── vuln/                    # Vulnerability testing modules
 │   │   ├── xss_scanner.py      # XSS vulnerability scanner
 │   │   ├── sqli_tester.py      # SQL injection tester
 │   │   ├── ssrf_tester.py      # SSRF vulnerability scanner
 │   │   ├── cors_checker.py     # CORS misconfiguration checker
-│   │   ├── api_scanner.py      # API security scanner (NEW)
-│   │   ├── jwt_analyzer.py     # JWT token analyzer (NEW)
-│   │   ├── bola_tester.py      # BOLA/IDOR tester (NEW)
-│   │   └── graphql_scanner.py  # GraphQL security scanner (NEW)
+│   │   ├── open_redirect.py    # Open redirect scanner (NEW)
+│   │   ├── ssti_detector.py    # SSTI detector (NEW)
+│   │   ├── xxe_scanner.py      # XXE scanner (NEW)
+│   │   ├── api_scanner.py      # API security scanner
+│   │   ├── jwt_analyzer.py     # JWT token analyzer
+│   │   ├── bola_tester.py      # BOLA/IDOR tester
+│   │   └── graphql_scanner.py  # GraphQL security scanner
 │   └── utils/                   # Utility tools
-│       └── report_generator.py
+│       ├── report_generator.py
+│       └── notifier.py         # Slack/Discord notifications (NEW)
 ├── wordlists/                   # Custom wordlists
 │   ├── subdomains.txt
 │   └── directories.txt
@@ -241,7 +255,54 @@ python3 orchestrator/vuln_scanner.py -u https://api.example.com -o results/api \
   --api --bola --graphql --jwt --token "eyJhbGciOiJIUzI1NiIs..."
 ```
 
-### 7. Generate HTML Report
+### 7. High-Value Bug Hunting Tools
+
+Test for open redirects:
+
+```bash
+python3 tools/vuln/open_redirect.py "https://example.com/redirect?url=test"
+```
+
+Check for subdomain takeovers:
+
+```bash
+# From subdomain enumeration results
+python3 tools/recon/subdomain_takeover.py results/subdomains/all_subdomains.txt
+
+# With output file
+python3 tools/recon/subdomain_takeover.py subdomains.txt takeover_results.json
+```
+
+Scan JavaScript files for secrets:
+
+```bash
+# Scan a target for JS secrets and API keys
+python3 tools/recon/js_secret_scanner.py https://example.com secrets.json
+```
+
+Test for SSTI vulnerabilities:
+
+```bash
+python3 tools/vuln/ssti_detector.py "https://example.com/search?q=test"
+```
+
+Test for XXE injection:
+
+```bash
+python3 tools/vuln/xxe_scanner.py "https://example.com/api/upload"
+```
+
+Send Slack/Discord notifications:
+
+```bash
+# Test Slack webhook
+python3 tools/utils/notifier.py "https://hooks.slack.com/services/..." slack
+
+# Test Discord webhook
+python3 tools/utils/notifier.py "https://discord.com/api/webhooks/..." discord
+```
+
+### 8. Generate HTML Report
 
 ```bash
 python3 tools/utils/report_generator.py results/example
