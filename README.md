@@ -33,6 +33,12 @@ A comprehensive, automated security testing and reconnaissance framework for bug
 - **JS Secret Scanner**: Extract API keys, tokens, credentials from JavaScript
 - **SSTI Detector**: Server-Side Template Injection (Jinja2, Twig, Freemarker, etc.)
 - **XXE Scanner**: XML External Entity injection testing
+- **Command Injection**: OS command injection with time-based and output-based detection
+- **File Upload Tester**: Insecure file upload (shells, polyglots, bypass techniques)
+- **LFI/RFI Scanner**: Local and Remote File Inclusion with encoding bypasses
+- **CRLF Injection**: HTTP response splitting and header injection
+- **Security Headers**: Comprehensive security configuration checker
+- **WAF Detector**: Identifies 15+ WAFs and security products
 - **Slack/Discord Notifications**: Real-time vulnerability alerts
 
 ### Advanced Features
@@ -53,7 +59,8 @@ websec/
 ├── tools/
 │   ├── recon/                   # Reconnaissance tools
 │   │   ├── subdomain_takeover.py  # Subdomain takeover checker (NEW)
-│   │   └── js_secret_scanner.py   # JavaScript secret scanner (NEW)
+│   │   ├── js_secret_scanner.py   # JavaScript secret scanner (NEW)
+│   │   └── waf_detector.py        # WAF/security product detector (NEW)
 │   ├── vuln/                    # Vulnerability testing modules
 │   │   ├── xss_scanner.py      # XSS vulnerability scanner
 │   │   ├── sqli_tester.py      # SQL injection tester
@@ -62,6 +69,11 @@ websec/
 │   │   ├── open_redirect.py    # Open redirect scanner (NEW)
 │   │   ├── ssti_detector.py    # SSTI detector (NEW)
 │   │   ├── xxe_scanner.py      # XXE scanner (NEW)
+│   │   ├── command_injection.py # Command injection scanner (NEW)
+│   │   ├── file_upload_tester.py # File upload vulnerability tester (NEW)
+│   │   ├── lfi_rfi_scanner.py  # LFI/RFI scanner (NEW)
+│   │   ├── crlf_injection.py   # CRLF injection tester (NEW)
+│   │   ├── security_headers.py # Security headers checker (NEW)
 │   │   ├── api_scanner.py      # API security scanner
 │   │   ├── jwt_analyzer.py     # JWT token analyzer
 │   │   ├── bola_tester.py      # BOLA/IDOR tester
@@ -302,7 +314,45 @@ python3 tools/utils/notifier.py "https://hooks.slack.com/services/..." slack
 python3 tools/utils/notifier.py "https://discord.com/api/webhooks/..." discord
 ```
 
-### 8. Generate HTML Report
+### 8. Additional Security Testing Tools
+
+Test for command injection vulnerabilities:
+
+```bash
+python3 tools/vuln/command_injection.py "https://example.com/exec?cmd=test"
+```
+
+Test file upload security:
+
+```bash
+python3 tools/vuln/file_upload_tester.py "https://example.com/upload"
+```
+
+Test for Local/Remote File Inclusion:
+
+```bash
+python3 tools/vuln/lfi_rfi_scanner.py "https://example.com/page?file=index.php"
+```
+
+Test for CRLF injection:
+
+```bash
+python3 tools/vuln/crlf_injection.py "https://example.com/redirect?url=test"
+```
+
+Check security headers and configuration:
+
+```bash
+python3 tools/vuln/security_headers.py "https://example.com"
+```
+
+Detect WAF and security products:
+
+```bash
+python3 tools/recon/waf_detector.py "https://example.com"
+```
+
+### 9. Generate HTML Report
 
 ```bash
 python3 tools/utils/report_generator.py results/example
@@ -517,20 +567,35 @@ Contributions welcome! Add new modules:
 
 ## 📝 Roadmap
 
-- [ ] JWT token analyzer
-- [ ] Open redirect finder
-- [ ] CRLF injection tester
+**Completed:**
+- [x] JWT token analyzer
+- [x] Open redirect finder
+- [x] CRLF injection tester
+- [x] XXE vulnerability scanner
+- [x] Template injection detector (SSTI)
+- [x] Subdomain takeover checker
+- [x] Slack/Discord notifications
+- [x] Command injection scanner
+- [x] File upload vulnerability tester
+- [x] LFI/RFI scanner
+- [x] Security headers checker
+- [x] WAF/security product detector
+- [x] API security scanner (OWASP API Top 10)
+- [x] GraphQL security scanner
+- [x] BOLA/IDOR tester
+- [x] JavaScript secret scanner
+
+**Planned:**
 - [ ] API fuzzing module
 - [ ] Webhook/callback integration for blind vulnerabilities
 - [ ] Selenium-based DOM XSS detection
 - [ ] NoSQL injection tester
-- [ ] XXE vulnerability scanner
-- [ ] Template injection detector
-- [ ] Subdomain takeover checker
+- [ ] LDAP injection tester
 - [ ] Screenshot capture integration
-- [ ] Slack/Discord notifications
 - [ ] PDF report generation
 - [ ] Database backend for results
+- [ ] Automated exploit generation
+- [ ] Integration with Burp Suite
 
 ## 📚 Resources
 
