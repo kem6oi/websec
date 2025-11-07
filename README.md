@@ -39,6 +39,11 @@ A comprehensive, automated security testing and reconnaissance framework for bug
 - **CRLF Injection**: HTTP response splitting and header injection
 - **Security Headers**: Comprehensive security configuration checker
 - **WAF Detector**: Identifies 15+ WAFs and security products
+- **NoSQL Injection**: MongoDB and NoSQL database injection testing
+- **Host Header Injection**: Password reset poisoning, cache poisoning, SSRF
+- **Sensitive Data Scanner**: Exposed configs, backups, credentials, API keys
+- **Parameter Pollution**: HTTP parameter pollution (HPP) for WAF bypass
+- **IDOR Enumerator**: Automated enumeration for insecure direct object references
 - **Slack/Discord Notifications**: Real-time vulnerability alerts
 
 ### Advanced Features
@@ -60,7 +65,8 @@ websec/
 │   ├── recon/                   # Reconnaissance tools
 │   │   ├── subdomain_takeover.py  # Subdomain takeover checker (NEW)
 │   │   ├── js_secret_scanner.py   # JavaScript secret scanner (NEW)
-│   │   └── waf_detector.py        # WAF/security product detector (NEW)
+│   │   ├── waf_detector.py        # WAF/security product detector (NEW)
+│   │   └── sensitive_data_scanner.py # Sensitive data exposure scanner (NEW)
 │   ├── vuln/                    # Vulnerability testing modules
 │   │   ├── xss_scanner.py      # XSS vulnerability scanner
 │   │   ├── sqli_tester.py      # SQL injection tester
@@ -74,6 +80,10 @@ websec/
 │   │   ├── lfi_rfi_scanner.py  # LFI/RFI scanner (NEW)
 │   │   ├── crlf_injection.py   # CRLF injection tester (NEW)
 │   │   ├── security_headers.py # Security headers checker (NEW)
+│   │   ├── nosql_injection.py  # NoSQL injection tester (NEW)
+│   │   ├── host_header_injection.py # Host header injection scanner (NEW)
+│   │   ├── parameter_pollution.py # HTTP parameter pollution tester (NEW)
+│   │   ├── idor_enumerator.py  # IDOR enumeration tool (NEW)
 │   │   ├── api_scanner.py      # API security scanner
 │   │   ├── jwt_analyzer.py     # JWT token analyzer
 │   │   ├── bola_tester.py      # BOLA/IDOR tester
@@ -352,7 +362,47 @@ Detect WAF and security products:
 python3 tools/recon/waf_detector.py "https://example.com"
 ```
 
-### 9. Generate HTML Report
+### 9. Additional Advanced Testing Tools
+
+Test for NoSQL injection:
+
+```bash
+python3 tools/vuln/nosql_injection.py "https://example.com/api/login"
+```
+
+Test for Host header injection:
+
+```bash
+python3 tools/vuln/host_header_injection.py "https://example.com"
+```
+
+Scan for sensitive data exposure:
+
+```bash
+# Basic scan
+python3 tools/recon/sensitive_data_scanner.py "https://example.com"
+
+# With custom threads
+python3 tools/recon/sensitive_data_scanner.py "https://example.com" results.json 20
+```
+
+Test for HTTP parameter pollution:
+
+```bash
+python3 tools/vuln/parameter_pollution.py "https://example.com/page?id=1"
+```
+
+Enumerate IDOR vulnerabilities:
+
+```bash
+# Without authentication
+python3 tools/vuln/idor_enumerator.py "https://example.com/api/user/123"
+
+# With authentication token
+python3 tools/vuln/idor_enumerator.py "https://example.com/api/user?id=123" "Bearer_token" 50
+```
+
+### 10. Generate HTML Report
 
 ```bash
 python3 tools/utils/report_generator.py results/example
@@ -584,6 +634,11 @@ Contributions welcome! Add new modules:
 - [x] GraphQL security scanner
 - [x] BOLA/IDOR tester
 - [x] JavaScript secret scanner
+- [x] NoSQL injection tester
+- [x] Host header injection scanner
+- [x] Sensitive data exposure scanner
+- [x] HTTP parameter pollution (HPP) tester
+- [x] IDOR enumeration tool
 
 **Planned:**
 - [ ] API fuzzing module
