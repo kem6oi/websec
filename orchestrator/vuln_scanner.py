@@ -21,6 +21,10 @@ from vuln.xss_scanner import XSSScanner
 from vuln.sqli_tester import SQLiTester
 from vuln.ssrf_tester import SSRFTester
 from vuln.cors_checker import CORSChecker
+from vuln.api_scanner import APIScanner
+from vuln.jwt_analyzer import JWTAnalyzer
+from vuln.bola_tester import BOLATester
+from vuln.graphql_scanner import GraphQLScanner
 
 class Colors:
     """Terminal colors"""
@@ -103,6 +107,50 @@ class VulnScanner:
         checker = CORSChecker(self.target, output_file)
 
         thread = threading.Thread(target=self._execute_scan, args=("CORS", checker))
+        thread.start()
+        self.threads.append(thread)
+
+    def run_api_scan(self):
+        """Run API vulnerability scanner"""
+        print(f"{Colors.OKBLUE}[*] Starting API Scanner...{Colors.ENDC}")
+
+        output_file = self.output_dir / "api_results.json"
+        scanner = APIScanner(self.target, output_file)
+
+        thread = threading.Thread(target=self._execute_scan, args=("API", scanner))
+        thread.start()
+        self.threads.append(thread)
+
+    def run_bola_test(self, auth_token=None):
+        """Run BOLA/IDOR tester"""
+        print(f"{Colors.OKBLUE}[*] Starting BOLA/IDOR Tester...{Colors.ENDC}")
+
+        output_file = self.output_dir / "bola_results.json"
+        tester = BOLATester(self.target, auth_token, output_file)
+
+        thread = threading.Thread(target=self._execute_scan, args=("BOLA", tester))
+        thread.start()
+        self.threads.append(thread)
+
+    def run_graphql_scan(self):
+        """Run GraphQL vulnerability scanner"""
+        print(f"{Colors.OKBLUE}[*] Starting GraphQL Scanner...{Colors.ENDC}")
+
+        output_file = self.output_dir / "graphql_results.json"
+        scanner = GraphQLScanner(self.target, output_file)
+
+        thread = threading.Thread(target=self._execute_scan, args=("GraphQL", scanner))
+        thread.start()
+        self.threads.append(thread)
+
+    def run_jwt_analysis(self, token):
+        """Run JWT token analysis"""
+        print(f"{Colors.OKBLUE}[*] Starting JWT Analyzer...{Colors.ENDC}")
+
+        output_file = self.output_dir / "jwt_results.json"
+        analyzer = JWTAnalyzer(token, self.target, output_file)
+
+        thread = threading.Thread(target=self._execute_scan, args=("JWT", analyzer))
         thread.start()
         self.threads.append(thread)
 
@@ -243,17 +291,25 @@ class VulnScanner:
             print(f"      Low:      {report['summary']['low']}")
         print(f"{'='*70}{Colors.ENDC}\n")
 
-    def run_full_scan(self):
+    def run_full_scan(self, jwt_token=None, auth_token=None):
         """Run all vulnerability scans"""
         self.print_banner()
 
-        print(f"\n{Colors.HEADER}[Phase 1] Custom Vulnerability Scanners{Colors.ENDC}")
+        print(f"\n{Colors.HEADER}[Phase 1] Web Vulnerability Scanners{Colors.ENDC}")
         self.run_xss_scan()
         self.run_sqli_scan()
         self.run_ssrf_scan()
         self.run_cors_check()
 
-        print(f"\n{Colors.HEADER}[Phase 2] External Tool Scans{Colors.ENDC}")
+        print(f"\n{Colors.HEADER}[Phase 2] API Security Testing{Colors.ENDC}")
+        self.run_api_scan()
+        self.run_bola_test(auth_token)
+        self.run_graphql_scan()
+
+        if jwt_token:
+            self.run_jwt_analysis(jwt_token)
+
+        print(f"\n{Colors.HEADER}[Phase 3] External Tool Scans{Colors.ENDC}")
         self.run_nuclei()
         self.run_sqlmap()
 
@@ -263,7 +319,7 @@ class VulnScanner:
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Vulnerability scanner orchestrator",
+        description="Vulnerability scanner orchestrator with API security testing",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
@@ -272,21 +328,41 @@ Examples:
 
   Specific scans:
     python3 vuln_scanner.py -u https://example.com -o results/vulns --xss --sqli
+
+  API testing with authentication:
+    python3 vuln_scanner.py -u https://api.example.com -o results/api --api --bola --token YOUR_JWT
+
+  GraphQL testing:
+    python3 vuln_scanner.py -u https://api.example.com/graphql -o results/gql --graphql
         """
     )
 
     parser.add_argument('-u', '--url', required=True, help='Target URL')
     parser.add_argument('-o', '--output', required=True, help='Output directory')
+
+    # Web vulnerability scans
     parser.add_argument('--xss', action='store_true', help='Run XSS scanner only')
     parser.add_argument('--sqli', action='store_true', help='Run SQLi scanner only')
     parser.add_argument('--ssrf', action='store_true', help='Run SSRF scanner only')
     parser.add_argument('--cors', action='store_true', help='Run CORS checker only')
 
+    # API security scans
+    parser.add_argument('--api', action='store_true', help='Run API vulnerability scanner')
+    parser.add_argument('--bola', action='store_true', help='Run BOLA/IDOR tester')
+    parser.add_argument('--graphql', action='store_true', help='Run GraphQL scanner')
+    parser.add_argument('--jwt', action='store_true', help='Run JWT analyzer')
+
+    # Authentication tokens
+    parser.add_argument('--token', help='JWT or Bearer token for authenticated scans')
+    parser.add_argument('--auth-token', help='Separate auth token for BOLA testing')
+
     args = parser.parse_args()
 
     scanner = VulnScanner(args.url, args.output)
 
-    if args.xss or args.sqli or args.ssrf or args.cors:
+    specific_scan = args.xss or args.sqli or args.ssrf or args.cors or args.api or args.bola or args.graphql or args.jwt
+
+    if specific_scan:
         scanner.print_banner()
         if args.xss:
             scanner.run_xss_scan()
@@ -296,10 +372,21 @@ Examples:
             scanner.run_ssrf_scan()
         if args.cors:
             scanner.run_cors_check()
+        if args.api:
+            scanner.run_api_scan()
+        if args.bola:
+            scanner.run_bola_test(args.auth_token or args.token)
+        if args.graphql:
+            scanner.run_graphql_scan()
+        if args.jwt and args.token:
+            scanner.run_jwt_analysis(args.token)
+        elif args.jwt and not args.token:
+            print(f"{Colors.WARNING}[!] --jwt requires --token parameter{Colors.ENDC}")
+
         scanner.wait_for_completion()
         scanner.generate_report()
     else:
-        scanner.run_full_scan()
+        scanner.run_full_scan(jwt_token=args.token, auth_token=args.auth_token or args.token)
 
 
 if __name__ == "__main__":

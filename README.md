@@ -19,6 +19,22 @@ A comprehensive, automated security testing and reconnaissance framework for bug
 - **CORS Checker**: Misconfiguration detection with credential testing
 - **Integration**: SQLMap and Nuclei for advanced scanning
 
+### API Security Testing
+- **API Scanner**: OWASP API Security Top 10 vulnerabilities
+- **JWT Analyzer**: Token decoding, weak secrets, algorithm confusion
+- **BOLA/IDOR Tester**: Broken authorization and insecure direct object references
+- **GraphQL Scanner**: Introspection, depth limits, batch queries, injection
+- **Mass Assignment**: Parameter pollution and privilege escalation
+- **Rate Limiting**: Resource exhaustion and DoS protection testing
+
+### High-Value Bug Hunting Tools (NEW! 🔥)
+- **Open Redirect Scanner**: Unvalidated redirect detection (GET/POST/Meta/JS)
+- **Subdomain Takeover**: Detects dangling DNS (20+ cloud services)
+- **JS Secret Scanner**: Extract API keys, tokens, credentials from JavaScript
+- **SSTI Detector**: Server-Side Template Injection (Jinja2, Twig, Freemarker, etc.)
+- **XXE Scanner**: XML External Entity injection testing
+- **Slack/Discord Notifications**: Real-time vulnerability alerts
+
 ### Advanced Features
 - ⚡ **Parallel Execution**: Multi-threaded scanning with tmux sessions
 - 📊 **Professional Reports**: HTML reports with severity classification
@@ -36,13 +52,23 @@ websec/
 │   └── vuln_scanner.py          # Vulnerability scanner orchestrator
 ├── tools/
 │   ├── recon/                   # Reconnaissance tools
+│   │   ├── subdomain_takeover.py  # Subdomain takeover checker (NEW)
+│   │   └── js_secret_scanner.py   # JavaScript secret scanner (NEW)
 │   ├── vuln/                    # Vulnerability testing modules
-│   │   ├── xss_scanner.py
-│   │   ├── sqli_tester.py
-│   │   ├── ssrf_tester.py
-│   │   └── cors_checker.py
+│   │   ├── xss_scanner.py      # XSS vulnerability scanner
+│   │   ├── sqli_tester.py      # SQL injection tester
+│   │   ├── ssrf_tester.py      # SSRF vulnerability scanner
+│   │   ├── cors_checker.py     # CORS misconfiguration checker
+│   │   ├── open_redirect.py    # Open redirect scanner (NEW)
+│   │   ├── ssti_detector.py    # SSTI detector (NEW)
+│   │   ├── xxe_scanner.py      # XXE scanner (NEW)
+│   │   ├── api_scanner.py      # API security scanner
+│   │   ├── jwt_analyzer.py     # JWT token analyzer
+│   │   ├── bola_tester.py      # BOLA/IDOR tester
+│   │   └── graphql_scanner.py  # GraphQL security scanner
 │   └── utils/                   # Utility tools
-│       └── report_generator.py
+│       ├── report_generator.py
+│       └── notifier.py         # Slack/Discord notifications (NEW)
 ├── wordlists/                   # Custom wordlists
 │   ├── subdomains.txt
 │   └── directories.txt
@@ -188,7 +214,95 @@ Test CORS:
 python3 tools/vuln/cors_checker.py "https://api.example.com"
 ```
 
-### 7. Generate HTML Report
+### 6. API Security Testing
+
+Test API vulnerabilities (OWASP API Top 10):
+
+```bash
+python3 tools/vuln/api_scanner.py "https://api.example.com/v1/users"
+```
+
+Analyze JWT tokens:
+
+```bash
+# Decode and analyze JWT
+python3 tools/vuln/jwt_analyzer.py "eyJhbGciOiJIUzI1NiIs..."
+
+# Test JWT on server
+python3 tools/vuln/jwt_analyzer.py "eyJhbGciOiJIUzI1NiIs..." "https://api.example.com/user"
+```
+
+Test for BOLA/IDOR vulnerabilities:
+
+```bash
+# Without authentication
+python3 tools/vuln/bola_tester.py "https://api.example.com/users/123"
+
+# With JWT token
+python3 tools/vuln/bola_tester.py "https://api.example.com/users/123" "eyJhbGciOiJIUzI1NiIs..."
+```
+
+Scan GraphQL endpoints:
+
+```bash
+python3 tools/vuln/graphql_scanner.py "https://api.example.com/graphql"
+```
+
+Run comprehensive API scan with authentication:
+
+```bash
+python3 orchestrator/vuln_scanner.py -u https://api.example.com -o results/api \
+  --api --bola --graphql --jwt --token "eyJhbGciOiJIUzI1NiIs..."
+```
+
+### 7. High-Value Bug Hunting Tools
+
+Test for open redirects:
+
+```bash
+python3 tools/vuln/open_redirect.py "https://example.com/redirect?url=test"
+```
+
+Check for subdomain takeovers:
+
+```bash
+# From subdomain enumeration results
+python3 tools/recon/subdomain_takeover.py results/subdomains/all_subdomains.txt
+
+# With output file
+python3 tools/recon/subdomain_takeover.py subdomains.txt takeover_results.json
+```
+
+Scan JavaScript files for secrets:
+
+```bash
+# Scan a target for JS secrets and API keys
+python3 tools/recon/js_secret_scanner.py https://example.com secrets.json
+```
+
+Test for SSTI vulnerabilities:
+
+```bash
+python3 tools/vuln/ssti_detector.py "https://example.com/search?q=test"
+```
+
+Test for XXE injection:
+
+```bash
+python3 tools/vuln/xxe_scanner.py "https://example.com/api/upload"
+```
+
+Send Slack/Discord notifications:
+
+```bash
+# Test Slack webhook
+python3 tools/utils/notifier.py "https://hooks.slack.com/services/..." slack
+
+# Test Discord webhook
+python3 tools/utils/notifier.py "https://discord.com/api/webhooks/..." discord
+```
+
+### 8. Generate HTML Report
 
 ```bash
 python3 tools/utils/report_generator.py results/example
@@ -268,6 +382,44 @@ Target URL
     └─► Generate Report
 ```
 
+## 🔐 API Security Testing Workflow
+
+```
+API Endpoint
+    │
+    ├─► API Scanner (OWASP API Top 10)
+    │   ├─► Broken authentication
+    │   ├─► Excessive data exposure
+    │   ├─► Lack of rate limiting
+    │   ├─► Mass assignment
+    │   ├─► Security misconfiguration
+    │   ├─► Injection flaws
+    │   └─► HTTP verb tampering
+    │
+    ├─► JWT Analyzer
+    │   ├─► Decode token
+    │   ├─► Test 'none' algorithm
+    │   ├─► Algorithm confusion
+    │   ├─► Weak secret bruteforce
+    │   ├─► Expiration check
+    │   └─► Privilege escalation
+    │
+    ├─► BOLA/IDOR Tester
+    │   ├─► Sequential ID enumeration
+    │   ├─► UUID enumeration
+    │   ├─► Horizontal escalation
+    │   └─► Unauthorized access
+    │
+    ├─► GraphQL Scanner
+    │   ├─► Introspection query
+    │   ├─► Query depth limits
+    │   ├─► Batch query limits
+    │   ├─► Field suggestions
+    │   └─► Injection testing
+    │
+    └─► Generate Report
+```
+
 ## 📊 Output & Results
 
 Results are organized by scan type:
@@ -286,7 +438,11 @@ results/example/
 │   ├── xss_results.json
 │   ├── sqli_results.json
 │   ├── ssrf_results.json
-│   └── cors_results.json
+│   ├── cors_results.json
+│   ├── api_results.json         # API security scan (NEW)
+│   ├── jwt_results.json          # JWT analysis (NEW)
+│   ├── bola_results.json         # BOLA/IDOR findings (NEW)
+│   └── graphql_results.json      # GraphQL scan (NEW)
 ├── report_20231107_123456.json
 └── report.html
 ```

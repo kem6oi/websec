@@ -1,0 +1,36 @@
+# Introspection
+{__schema{types{name}}}
+{__schema{queryType{name fields{name}}}}
+{__type(name:"User"){fields{name}}}
+
+# Field enumeration
+{users{id}}
+{users{id username}}
+{users{id username email}}
+{users{id username email password}}
+
+# Common queries
+{user(id:1){id}}
+{users{id email}}
+{me{id email}}
+{currentUser{id}}
+{admin{id}}
+{admins{id}}
+
+# Mutations
+mutation{login(username:"admin",password:"test"){token}}
+mutation{createUser(username:"test"){id}}
+mutation{deleteUser(id:1){success}}
+mutation{updateUser(id:1,role:"admin"){id}}
+
+# Batch queries
+[{"query":"{users{id}}"},{"query":"{posts{id}}"}]
+
+# Nested queries
+{users{posts{comments{user{posts{id}}}}}}
+
+# Aliases
+{user1:user(id:1){id} user2:user(id:2){id}}
+
+# Fragments
+{users{...userFields}} fragment userFields on User{id email}
