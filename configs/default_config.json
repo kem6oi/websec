@@ -1,0 +1,64 @@
+{
+  "reconnaissance": {
+    "subdomain_wordlist": "wordlists/subdomains.txt",
+    "directory_wordlist": "wordlists/directories.txt",
+    "threads": 50,
+    "timeout": 3600,
+    "rate_limit": 100,
+    "user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36"
+  },
+  "vulnerability_scanning": {
+    "xss": {
+      "enabled": true,
+      "payload_file": "payloads/xss_payloads.txt",
+      "timeout": 10
+    },
+    "sqli": {
+      "enabled": true,
+      "payload_file": "payloads/sqli_payloads.txt",
+      "timeout": 15
+    },
+    "ssrf": {
+      "enabled": true,
+      "timeout": 15
+    },
+    "cors": {
+      "enabled": true,
+      "timeout": 10
+    }
+  },
+  "reporting": {
+    "format": "html",
+    "include_screenshots": false,
+    "severity_filter": ["critical", "high", "medium", "low"]
+  },
+  "tools": {
+    "subfinder": {
+      "enabled": true,
+      "args": "-silent"
+    },
+    "assetfinder": {
+      "enabled": true,
+      "args": "--subs-only"
+    },
+    "httpx": {
+      "enabled": true,
+      "args": "-title -status-code -tech-detect -silent"
+    },
+    "nuclei": {
+      "enabled": true,
+      "args": "-silent -severity critical,high,medium",
+      "templates": "default"
+    },
+    "nmap": {
+      "enabled": true,
+      "args": "-sV -sC",
+      "ports": "top-1000"
+    },
+    "gobuster": {
+      "enabled": true,
+      "args": "-t 50 -q",
+      "extensions": "php,html,js,txt,json"
+    }
+  }
+}
