@@ -62,6 +62,11 @@ A comprehensive, automated security testing and reconnaissance framework for bug
 - **XML Attacks**: Advanced XXE (blind, OOB), XPath injection, XML bomb (Billion Laughs)
 - **Deserialization Attacks**: Java gadget chains, Python pickle, PHP POP chains, YAML unsafe loading
 
+### Critical Vulnerabilities Testing (NEW! 💰🔥)
+- **Account Takeover Chain**: Password reset flows, OAuth vulnerabilities, session fixation
+- **Payment Bypass**: Free trial abuse, refund manipulation, subscription bypass, amount tampering
+- **Privilege Escalation**: Horizontal IDOR, vertical escalation, role manipulation, JWT attacks
+
 ### High-Value Bug Hunting Tools
 - **Open Redirect Scanner**: Unvalidated redirect detection (GET/POST/Meta/JS)
 - **Subdomain Takeover**: Detects dangling DNS (20+ cloud services)
@@ -133,6 +138,10 @@ websec/
 │   │   │   ├── ldap_injection.py          # LDAP auth bypass, data exfiltration
 │   │   │   ├── xml_attacks.py             # XXE, XPath, XML bomb
 │   │   │   └── deserialization.py         # Java, Python, PHP, YAML deserialization
+│   │   ├── critical/           # Critical vulnerability testing (NEW! 💰)
+│   │   │   ├── account_takeover_chain.py  # Password reset, OAuth, session fixation
+│   │   │   ├── payment_bypass.py          # Trial abuse, refund manipulation, subscription bypass
+│   │   │   └── privilege_escalation_tester.py # IDOR, vertical escalation, role manipulation
 │   │   ├── xss_scanner.py      # XSS vulnerability scanner
 │   │   ├── sqli_tester.py      # SQL injection tester
 │   │   ├── ssrf_tester.py      # SSRF vulnerability scanner
@@ -623,7 +632,35 @@ Deserialization vulnerability testing:
 python3 tools/vuln/injection/deserialization.py https://example.com/api/process
 ```
 
-### 17. Generate HTML Report
+### 17. Critical Vulnerabilities Testing
+
+Test complete account takeover chains:
+
+```bash
+python3 tools/vuln/critical/account_takeover_chain.py https://example.com results.json
+```
+
+Test payment bypass vulnerabilities:
+
+```bash
+# Without authentication
+python3 tools/vuln/critical/payment_bypass.py https://example.com
+
+# With authentication token
+python3 tools/vuln/critical/payment_bypass.py https://example.com eyJhbGciOiJIUzI1NiIs... results.json
+```
+
+Test privilege escalation:
+
+```bash
+# Without authentication
+python3 tools/vuln/critical/privilege_escalation_tester.py https://example.com
+
+# With authentication token
+python3 tools/vuln/critical/privilege_escalation_tester.py https://example.com eyJhbGciOiJIUzI1NiIs... results.json
+```
+
+### 18. Generate HTML Report
 
 ```bash
 python3 tools/utils/report_generator.py results/example
@@ -838,7 +875,7 @@ Contributions welcome! Add new modules:
 
 ## 📝 Roadmap
 
-**Completed (51 specialized security tools):**
+**Completed (54 specialized security tools):**
 - [x] JWT token analyzer
 - [x] Open redirect finder
 - [x] CRLF injection tester
@@ -883,6 +920,9 @@ Contributions welcome! Add new modules:
 - [x] LDAP injection tester (auth bypass, data exfiltration)
 - [x] XML attacks scanner (XXE, XPath, XML bomb)
 - [x] Deserialization scanner (Java, Python, PHP, YAML)
+- [x] Account takeover chain tester (password reset, OAuth, session fixation)
+- [x] Payment bypass tester (trial abuse, refund manipulation, subscription bypass)
+- [x] Privilege escalation tester (IDOR, vertical escalation, role manipulation)
 
 **Planned:**
 - [ ] API fuzzing module
