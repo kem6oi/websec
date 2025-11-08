@@ -27,11 +27,16 @@ A comprehensive, automated security testing and reconnaissance framework for bug
 - **Mass Assignment**: Parameter pollution and privilege escalation
 - **Rate Limiting**: Resource exhaustion and DoS protection testing
 
-### Authentication Security Testing (NEW! 🔥🔐)
+### Authentication Security Testing (🔥🔐)
 - **Broken Authentication Scanner**: Password reset poisoning, session fixation, auth bypass
 - **OAuth Vulnerability Scanner**: Redirect URI manipulation, token theft, scope abuse
 - **2FA/MFA Bypass Tester**: Rate limiting, response manipulation, predictable codes
 - **Session Security Tester**: Session hijacking, cookie security, logout verification
+
+### Business Logic Testing (NEW! 💼🔥)
+- **Race Condition Tester**: Coupon reuse, concurrent operations, balance manipulation
+- **Price Manipulation Scanner**: Negative quantities, parameter tampering, currency confusion
+- **Workflow Bypass Tester**: Payment skip, multi-step manipulation, state transition abuse
 
 ### High-Value Bug Hunting Tools
 - **Open Redirect Scanner**: Unvalidated redirect detection (GET/POST/Meta/JS)
@@ -680,6 +685,9 @@ Contributions welcome! Add new modules:
 - [x] OAuth vulnerability scanner
 - [x] 2FA/MFA bypass tester
 - [x] Session security tester
+- [x] Race condition tester
+- [x] Price manipulation scanner
+- [x] Workflow bypass tester
 
 **Planned:**
 - [ ] API fuzzing module
