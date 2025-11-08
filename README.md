@@ -26,12 +26,29 @@ A comprehensive, automated security testing and reconnaissance framework for bug
 - **GraphQL Scanner**: Introspection, depth limits, batch queries, injection
 - **Mass Assignment**: Parameter pollution and privilege escalation
 - **Rate Limiting**: Resource exhaustion and DoS protection testing
+- **Advanced GraphQL Scanner** (NEW! 🚀): Batching abuse, alias abuse, query complexity (DoS)
+- **REST API Fuzzer** (NEW! 🚀): HTTP verb tampering, content-type confusion, API versioning bypass
+- **Mass Assignment Tester** (NEW! 🚀): Privilege escalation, hidden parameters, object injection
 
-### Authentication Security Testing (NEW! 🔥🔐)
+### Authentication Security Testing (🔥🔐)
 - **Broken Authentication Scanner**: Password reset poisoning, session fixation, auth bypass
 - **OAuth Vulnerability Scanner**: Redirect URI manipulation, token theft, scope abuse
 - **2FA/MFA Bypass Tester**: Rate limiting, response manipulation, predictable codes
 - **Session Security Tester**: Session hijacking, cookie security, logout verification
+
+### Business Logic Testing (NEW! 💼🔥)
+- **Race Condition Tester**: Coupon reuse, concurrent operations, balance manipulation
+- **Price Manipulation Scanner**: Negative quantities, parameter tampering, currency confusion
+- **Workflow Bypass Tester**: Payment skip, multi-step manipulation, state transition abuse
+
+### Advanced SSRF Testing (NEW! 🌐🔥)
+- **Advanced SSRF Scanner**: Cloud metadata (AWS/GCP/Azure), internal port scanning, protocol smuggling
+- **Webhook Exploit Tester**: Webhook SSRF, command injection, redirect following
+
+### Advanced File Vulnerability Testing (NEW! 📁🔥)
+- **Advanced File Upload Tester**: Polyglot files, zip slip, ImageMagick exploits (ImageTragick)
+- **Advanced LFI Scanner**: PHP wrappers (php://filter, data://, expect://), log poisoning, session inclusion
+- **Advanced Path Traversal Scanner**: Unicode bypass, double encoding, OS-specific tricks
 
 ### High-Value Bug Hunting Tools
 - **Open Redirect Scanner**: Unvalidated redirect detection (GET/POST/Meta/JS)
@@ -79,6 +96,21 @@ websec/
 │   │   │   ├── oauth_vulnerabilities.py # OAuth 2.0 security testing
 │   │   │   ├── 2fa_bypass.py   # 2FA/MFA bypass techniques
 │   │   │   └── session_security.py # Session management security
+│   │   ├── business_logic/     # Business logic testing (NEW! 💼)
+│   │   │   ├── race_condition_tester.py # Race conditions, concurrent operations
+│   │   │   ├── price_manipulation.py    # Price tampering, negative quantities
+│   │   │   └── workflow_bypass.py       # Multi-step process bypass
+│   │   ├── api/                # Advanced API security (NEW! 🚀)
+│   │   │   ├── mass_assignment.py       # Privilege escalation, hidden parameters
+│   │   │   ├── graphql_advanced.py      # Batching abuse, alias abuse, depth limits
+│   │   │   └── rest_api_fuzzer.py       # HTTP verb tampering, content-type confusion
+│   │   ├── ssrf/               # Advanced SSRF testing (NEW! 🌐)
+│   │   │   ├── advanced_ssrf.py         # Cloud metadata, protocol smuggling
+│   │   │   └── webhook_exploits.py      # Webhook SSRF, command injection
+│   │   ├── file/               # Advanced file vulnerabilities (NEW! 📁)
+│   │   │   ├── advanced_file_upload.py  # Polyglot files, zip slip, ImageTragick
+│   │   │   ├── file_inclusion_advanced.py # PHP wrappers, log poisoning
+│   │   │   └── path_traversal_advanced.py # Unicode bypass, double encoding
 │   │   ├── xss_scanner.py      # XSS vulnerability scanner
 │   │   ├── sqli_tester.py      # SQL injection tester
 │   │   ├── ssrf_tester.py      # SSRF vulnerability scanner
@@ -439,7 +471,85 @@ Test session security:
 python3 tools/vuln/auth/session_security.py "https://example.com"
 ```
 
-### 11. Generate HTML Report
+### 11. Business Logic Testing
+
+Test for race conditions:
+
+```bash
+python3 tools/vuln/business_logic/race_condition_tester.py "https://example.com/api/apply-coupon" coupon_code ABC123
+```
+
+Test price manipulation:
+
+```bash
+python3 tools/vuln/business_logic/price_manipulation.py "https://example.com/api/checkout"
+```
+
+Test workflow bypass:
+
+```bash
+python3 tools/vuln/business_logic/workflow_bypass.py "https://example.com/checkout/step1"
+```
+
+### 12. Advanced API Security Testing
+
+Test mass assignment vulnerabilities:
+
+```bash
+# Without authentication
+python3 tools/vuln/api/mass_assignment.py "https://api.example.com"
+
+# With authentication token
+python3 tools/vuln/api/mass_assignment.py "https://api.example.com" "eyJhbGciOiJIUzI1NiIs..."
+```
+
+Advanced GraphQL security testing:
+
+```bash
+python3 tools/vuln/api/graphql_advanced.py "https://api.example.com/graphql" results.json
+```
+
+REST API fuzzing:
+
+```bash
+python3 tools/vuln/api/rest_api_fuzzer.py "https://api.example.com/v1/users"
+```
+
+### 13. Advanced SSRF Testing
+
+Advanced SSRF scanner:
+
+```bash
+python3 tools/vuln/ssrf/advanced_ssrf.py "https://example.com/fetch?url=test"
+```
+
+Test webhook exploits:
+
+```bash
+python3 tools/vuln/ssrf/webhook_exploits.py "https://example.com/api/webhooks"
+```
+
+### 14. Advanced File Vulnerability Testing
+
+Advanced file upload testing:
+
+```bash
+python3 tools/vuln/file/advanced_file_upload.py "https://example.com/upload"
+```
+
+Advanced LFI scanner:
+
+```bash
+python3 tools/vuln/file/file_inclusion_advanced.py "https://example.com/index.php?file=home"
+```
+
+Advanced path traversal scanner:
+
+```bash
+python3 tools/vuln/file/path_traversal_advanced.py "https://example.com/download?file=report.pdf"
+```
+
+### 15. Generate HTML Report
 
 ```bash
 python3 tools/utils/report_generator.py results/example
@@ -654,7 +764,7 @@ Contributions welcome! Add new modules:
 
 ## 📝 Roadmap
 
-**Completed:**
+**Completed (43 specialized security tools):**
 - [x] JWT token analyzer
 - [x] Open redirect finder
 - [x] CRLF injection tester
@@ -680,6 +790,17 @@ Contributions welcome! Add new modules:
 - [x] OAuth vulnerability scanner
 - [x] 2FA/MFA bypass tester
 - [x] Session security tester
+- [x] Race condition tester
+- [x] Price manipulation scanner
+- [x] Workflow bypass tester
+- [x] Mass assignment tester (advanced)
+- [x] Advanced GraphQL scanner (batching abuse, alias abuse)
+- [x] REST API fuzzer (verb tampering, content-type confusion)
+- [x] Advanced SSRF scanner (cloud metadata, protocol smuggling)
+- [x] Webhook exploit tester
+- [x] Advanced file upload tester (polyglot, zip slip, ImageTragick)
+- [x] Advanced LFI scanner (PHP wrappers, log poisoning)
+- [x] Advanced path traversal scanner (unicode bypass, double encoding)
 
 **Planned:**
 - [ ] API fuzzing module
