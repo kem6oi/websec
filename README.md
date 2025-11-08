@@ -50,6 +50,18 @@ A comprehensive, automated security testing and reconnaissance framework for bug
 - **Advanced LFI Scanner**: PHP wrappers (php://filter, data://, expect://), log poisoning, session inclusion
 - **Advanced Path Traversal Scanner**: Unicode bypass, double encoding, OS-specific tricks
 
+### Data Exposure & Cloud Security (NEW! ☁️🔥)
+- **Cloud Storage Scanner**: S3, Azure Blob, Google Cloud Storage, Digital Ocean Spaces misconfiguration
+- **Backup File Finder**: .bak, .git, .env, .sql, database dumps, version control exposure
+- **Information Disclosure Scanner**: Error messages, stack traces, HTML/JS comments, API documentation
+- **PII Scanner**: Emails, phone numbers, SSNs, credit cards, API keys (AWS, Google, GitHub, Stripe)
+
+### Advanced Injection Attacks (NEW! 💉🔥)
+- **Advanced Template Injection**: Jinja2, Freemarker, Velocity, ERB, Thymeleaf, Twig SSTI
+- **LDAP Injection**: Authentication bypass, data exfiltration, blind LDAP injection
+- **XML Attacks**: Advanced XXE (blind, OOB), XPath injection, XML bomb (Billion Laughs)
+- **Deserialization Attacks**: Java gadget chains, Python pickle, PHP POP chains, YAML unsafe loading
+
 ### High-Value Bug Hunting Tools
 - **Open Redirect Scanner**: Unvalidated redirect detection (GET/POST/Meta/JS)
 - **Subdomain Takeover**: Detects dangling DNS (20+ cloud services)
@@ -86,6 +98,11 @@ websec/
 │   └── vuln_scanner.py          # Vulnerability scanner orchestrator
 ├── tools/
 │   ├── recon/                   # Reconnaissance tools
+│   │   ├── exposure/            # Data exposure & cloud security (NEW! ☁️)
+│   │   │   ├── cloud_storage_scanner.py  # S3, Azure, GCS, DO Spaces scanner
+│   │   │   ├── backup_file_finder.py     # Backup files, .git, .env finder
+│   │   │   ├── information_disclosure.py # Error messages, comments, docs
+│   │   │   └── pii_scanner.py            # Email, SSN, credit card, API key scanner
 │   │   ├── subdomain_takeover.py  # Subdomain takeover checker (NEW)
 │   │   ├── js_secret_scanner.py   # JavaScript secret scanner (NEW)
 │   │   ├── waf_detector.py        # WAF/security product detector (NEW)
@@ -111,6 +128,11 @@ websec/
 │   │   │   ├── advanced_file_upload.py  # Polyglot files, zip slip, ImageTragick
 │   │   │   ├── file_inclusion_advanced.py # PHP wrappers, log poisoning
 │   │   │   └── path_traversal_advanced.py # Unicode bypass, double encoding
+│   │   ├── injection/          # Advanced injection attacks (NEW! 💉)
+│   │   │   ├── template_injection_advanced.py # Jinja2, Freemarker, Velocity, ERB, Twig
+│   │   │   ├── ldap_injection.py          # LDAP auth bypass, data exfiltration
+│   │   │   ├── xml_attacks.py             # XXE, XPath, XML bomb
+│   │   │   └── deserialization.py         # Java, Python, PHP, YAML deserialization
 │   │   ├── xss_scanner.py      # XSS vulnerability scanner
 │   │   ├── sqli_tester.py      # SQL injection tester
 │   │   ├── ssrf_tester.py      # SSRF vulnerability scanner
@@ -549,7 +571,59 @@ Advanced path traversal scanner:
 python3 tools/vuln/file/path_traversal_advanced.py "https://example.com/download?file=report.pdf"
 ```
 
-### 15. Generate HTML Report
+### 15. Data Exposure & Cloud Security Testing
+
+Scan for cloud storage misconfigurations:
+
+```bash
+python3 tools/recon/exposure/cloud_storage_scanner.py example.com results.json
+```
+
+Find exposed backup files and sensitive data:
+
+```bash
+python3 tools/recon/exposure/backup_file_finder.py https://example.com 20 results.json
+```
+
+Scan for information disclosure:
+
+```bash
+python3 tools/recon/exposure/information_disclosure.py https://example.com
+```
+
+Scan for exposed PII and API keys:
+
+```bash
+python3 tools/recon/exposure/pii_scanner.py https://example.com results.json
+```
+
+### 16. Advanced Injection Attack Testing
+
+Advanced template injection testing:
+
+```bash
+python3 tools/vuln/injection/template_injection_advanced.py "https://example.com/search?q=test"
+```
+
+LDAP injection testing:
+
+```bash
+python3 tools/vuln/injection/ldap_injection.py https://example.com/login
+```
+
+XML attacks (XXE, XPath, XML bomb):
+
+```bash
+python3 tools/vuln/injection/xml_attacks.py https://example.com/api/xml
+```
+
+Deserialization vulnerability testing:
+
+```bash
+python3 tools/vuln/injection/deserialization.py https://example.com/api/process
+```
+
+### 17. Generate HTML Report
 
 ```bash
 python3 tools/utils/report_generator.py results/example
@@ -764,7 +838,7 @@ Contributions welcome! Add new modules:
 
 ## 📝 Roadmap
 
-**Completed (43 specialized security tools):**
+**Completed (51 specialized security tools):**
 - [x] JWT token analyzer
 - [x] Open redirect finder
 - [x] CRLF injection tester
@@ -801,6 +875,14 @@ Contributions welcome! Add new modules:
 - [x] Advanced file upload tester (polyglot, zip slip, ImageTragick)
 - [x] Advanced LFI scanner (PHP wrappers, log poisoning)
 - [x] Advanced path traversal scanner (unicode bypass, double encoding)
+- [x] Cloud storage scanner (S3, Azure, GCS, Digital Ocean Spaces)
+- [x] Backup file finder (.bak, .git, .env, database dumps)
+- [x] Information disclosure scanner (errors, comments, API docs)
+- [x] PII scanner (emails, SSNs, credit cards, API keys)
+- [x] Advanced template injection (Jinja2, Freemarker, Velocity, ERB, Twig)
+- [x] LDAP injection tester (auth bypass, data exfiltration)
+- [x] XML attacks scanner (XXE, XPath, XML bomb)
+- [x] Deserialization scanner (Java, Python, PHP, YAML)
 
 **Planned:**
 - [ ] API fuzzing module
