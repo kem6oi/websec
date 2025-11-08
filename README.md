@@ -27,7 +27,13 @@ A comprehensive, automated security testing and reconnaissance framework for bug
 - **Mass Assignment**: Parameter pollution and privilege escalation
 - **Rate Limiting**: Resource exhaustion and DoS protection testing
 
-### High-Value Bug Hunting Tools (NEW! 🔥)
+### Authentication Security Testing (NEW! 🔥🔐)
+- **Broken Authentication Scanner**: Password reset poisoning, session fixation, auth bypass
+- **OAuth Vulnerability Scanner**: Redirect URI manipulation, token theft, scope abuse
+- **2FA/MFA Bypass Tester**: Rate limiting, response manipulation, predictable codes
+- **Session Security Tester**: Session hijacking, cookie security, logout verification
+
+### High-Value Bug Hunting Tools
 - **Open Redirect Scanner**: Unvalidated redirect detection (GET/POST/Meta/JS)
 - **Subdomain Takeover**: Detects dangling DNS (20+ cloud services)
 - **JS Secret Scanner**: Extract API keys, tokens, credentials from JavaScript
@@ -68,6 +74,11 @@ websec/
 │   │   ├── waf_detector.py        # WAF/security product detector (NEW)
 │   │   └── sensitive_data_scanner.py # Sensitive data exposure scanner (NEW)
 │   ├── vuln/                    # Vulnerability testing modules
+│   │   ├── auth/               # Authentication security (NEW! 🔐)
+│   │   │   ├── broken_authentication.py # Password reset, session fixation, auth bypass
+│   │   │   ├── oauth_vulnerabilities.py # OAuth 2.0 security testing
+│   │   │   ├── 2fa_bypass.py   # 2FA/MFA bypass techniques
+│   │   │   └── session_security.py # Session management security
 │   │   ├── xss_scanner.py      # XSS vulnerability scanner
 │   │   ├── sqli_tester.py      # SQL injection tester
 │   │   ├── ssrf_tester.py      # SSRF vulnerability scanner
@@ -402,7 +413,33 @@ python3 tools/vuln/idor_enumerator.py "https://example.com/api/user/123"
 python3 tools/vuln/idor_enumerator.py "https://example.com/api/user?id=123" "Bearer_token" 50
 ```
 
-### 10. Generate HTML Report
+### 10. Authentication Security Testing
+
+Test for broken authentication vulnerabilities:
+
+```bash
+python3 tools/vuln/auth/broken_authentication.py "https://example.com"
+```
+
+Test OAuth 2.0 security:
+
+```bash
+python3 tools/vuln/auth/oauth_vulnerabilities.py "https://example.com"
+```
+
+Test 2FA/MFA bypass:
+
+```bash
+python3 tools/vuln/auth/2fa_bypass.py "https://example.com"
+```
+
+Test session security:
+
+```bash
+python3 tools/vuln/auth/session_security.py "https://example.com"
+```
+
+### 11. Generate HTML Report
 
 ```bash
 python3 tools/utils/report_generator.py results/example
@@ -639,6 +676,10 @@ Contributions welcome! Add new modules:
 - [x] Sensitive data exposure scanner
 - [x] HTTP parameter pollution (HPP) tester
 - [x] IDOR enumeration tool
+- [x] Broken authentication scanner
+- [x] OAuth vulnerability scanner
+- [x] 2FA/MFA bypass tester
+- [x] Session security tester
 
 **Planned:**
 - [ ] API fuzzing module
